@@ -1,37 +1,44 @@
-const tableData = data
-const tbody = d3.select('tbody')
+function showData(data) {
+    
+    let table = d3.select("#ufo-table")
 
-function buildTable(data) {
-    tbody.html('')  // Clear existing data
+    table.selectAll("tr").remove()
+    
+    let headerRow = table.append("tr")
 
-    data.forEach(row => {
-        const currentRow = tbody.append('tr')  // append row
-        Object.values(row).forEach(value => {
-            const cell = currentRow.append('td')
-            cell.text(value)
-        })
+    headerRow.append("th").text("Date")
+    headerRow.append("th").text("City")
+    headerRow.append("th").text("State")
+    headerRow.append("th").text("Country")
+    headerRow.append("th").text("Shape")
+    headerRow.append("th").text("Duration")
+    headerRow.append("th").text("Comments")
+
+    let tableBody = table.append("tbody")
+
+    data.forEach((d) => {
+        let row = tableBody.append("tr")
+        row.append("td").text(d.datetime)
+        row.append("td").text(d.city)
+        row.append("td").text(d.state)
+        row.append("td").text(d.country)
+        row.append("td").text(d.shape)
+        row.append("td").text(d.durationMinutes)
+        row.append("td").text(d.comments)
     })
 }
 
-const handleClick = () => {
-    d3.event.preventDefault()
+function handleClick() {
+    // d3.event.preventDefault()
 
-    const date = d3.select('#datetime').property('value')
-    let filteredData = tableData;
-
-    if (date)
-        filteredData = filteredData.filter(row => row.datetime === date)
+    let date = d3.select("#datetime").property("value")
+    const tableData = data
+    let filteredData = tableData
     
-    tbody.html('')  // Clear existing data
+    if (date)
+        filteredData = data.filter((d) => d.datetime === date)
 
-    data.forEach(row => {
-        const currentRow = tbody.append('tr')  // append row
-        Object.values(row).forEach(value => {
-            const cell = currentRow.append('td')
-            cell.text(value)
-        })
-    })
+    showData(filteredData)
 }
 
 d3.selectAll('#filter-btn').on('click', handleClick)
-// buildTable(tableData)
